@@ -373,7 +373,7 @@ export default function Hero() {
               <span className="text-2xl">🏆</span>
               <div>
                 <p className="text-xs text-gray-400">Finished Projects</p>
-                <p className="font-bold">40+</p>
+                <p className="font-bold">3+</p>
               </div>
             </div>
             <div className="w-full h-full rounded-full border border-white/10 overflow-hidden bg-gradient-to-b from-blue-500/20 to-transparent">
