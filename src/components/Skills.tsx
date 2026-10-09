@@ -1,213 +1,166 @@
-// import React from "react";
-
-// export default function Skills() {
-//   return (
-//     <section className="py-24 px-6 bg-slate-900/20">
-//       <div className="max-w-4xl mx-auto">
-//         <div className="text-center mb-16">
-//           <h2 className="text-4xl font-bold">Skills</h2>
-//           <p className="text-gray-500 mt-2">My Technical Level</p>
-//         </div>
-//         <div className="grid md:grid-cols-2 gap-8">
-//           <div className="glass-card p-8">
-//             <h3 className="text-2xl font-bold mb-8 text-center">Frontend Developer</h3>
-//             <div className="grid grid-cols-2 gap-y-6">
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">HTML5</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">Next JS</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">TypeScript</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">Tailwind Css</h4>
-//                   <p className="text-xs text-gray-500">Intermediate</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">JavaScript</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">React.JS</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//           <div className="glass-card p-8">
-//             <h3 className="text-2xl font-bold mb-8 text-center">Backend Developer</h3>
-//             <div className="grid grid-cols-2 gap-y-6">
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">NodeJS</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">SQL</h4>
-//                   <p className="text-xs text-gray-500">Intermediate</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">ExpressJS</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">Docker</h4>
-//                   <p className="text-xs text-gray-500">Intermediate</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">MongoDB</h4>
-//                   <p className="text-xs text-gray-500">Expert</p>
-//                 </div>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <span className="text-blue-400">✓</span>
-//                 <div>
-//                   <h4 className="font-medium text-sm">Kubernetes</h4>
-//                   <p className="text-xs text-gray-500">Intermediate</p>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
-
 import React from "react";
+import { 
+  SiJavascript, 
+  SiTypescript, 
+  SiNextdotjs, 
+  SiNodedotjs, 
+  SiExpress, 
+  SiTailwindcss, 
+  SiMongodb,
+  SiDaisyui,
+  SiHeroui,
+  SiBetterauth,
+  SiJsonwebtokens,
+  SiMongoose,
+  SiGit,
+  SiGithub,
+  SiVercel,
+  SiNetlify,
+  SiHtml5
+} from "react-icons/si";
+import { FaReact, FaCss3Alt } from "react-icons/fa";
+import { 
+  Code2, 
+  Server, 
+  ShieldCheck, 
+  Wrench, 
+  Network, 
+  Plug, 
+  Database, 
+  Lock 
+} from "lucide-react";
+
+interface SkillItem {
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  colorClass: string;
+}
+
+interface SkillCategory {
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
+  borderClass: string;
+  skills: SkillItem[];
+}
+
+const skillCategories: SkillCategory[] = [
+  {
+    title: "Frontend Development",
+    icon: Code2,
+    description: "Building responsive, modern, and interactive user interfaces.",
+    borderClass: "border-frontend",
+    skills: [
+      { name: "HTML5", icon: SiHtml5, colorClass: "text-[#E34F26]" },
+      { name: "CSS3", icon: FaCss3Alt, colorClass: "text-[#1572B6]" },
+      { name: "JavaScript (ES6+)", icon: SiJavascript, colorClass: "text-[#F7DF1E]" },
+      { name: "TypeScript", icon: SiTypescript, colorClass: "text-[#3178C6]" },
+      { name: "React", icon: FaReact, colorClass: "text-[#61DAFB]" },
+      { name: "Next.js", icon: SiNextdotjs, colorClass: "text-white" },
+      { name: "Tailwind CSS", icon: SiTailwindcss, colorClass: "text-[#06B6D4]" },
+    ],
+  },
+  {
+    title: "Backend & Database",
+    icon: Server,
+    description: "Architecting server-side logic, ODM integration, and database management.",
+    borderClass: "border-backend",
+    skills: [
+      { name: "Node.js", icon: SiNodedotjs, colorClass: "text-[#339933]" },
+      { name: "Express.js", icon: SiExpress, colorClass: "text-white" },
+      { name: "MongoDB", icon: SiMongodb, colorClass: "text-[#47A248]" },
+      { name: "Mongoose", icon: SiMongoose, colorClass: "text-[#880000] dark:text-[#E64C4C]" },
+      { name: "REST API Development", icon: Network, colorClass: "text-emerald-400" },
+    ],
+  },
+  {
+    title: "UI Libraries & Authentication",
+    icon: ShieldCheck,
+    description: "Implementing UI component systems, secure token standards, and auth flows.",
+    borderClass: "border-ui-auth",
+    skills: [
+      { name: "daisyUI", icon: SiDaisyui, colorClass: "text-[#5A0EF8] dark:text-[#1AD1A5]" },
+      { name: "HeroUI", icon: SiHeroui, colorClass: "text-[#006FEE]" },
+      { name: "Better Auth", icon: SiBetterauth, colorClass: "text-[#FF5E00]" },
+      { name: "JWT", icon: SiJsonwebtokens, colorClass: "text-[#D63AF9]" },
+      { name: "API Integration", icon: Plug, colorClass: "text-teal-400" },
+      { name: "CRUD Operations", icon: Database, colorClass: "text-blue-400" },
+      { name: "Authentication & Authorization", icon: Lock, colorClass: "text-purple-400" },
+    ],
+  },
+  {
+    title: "Tools & Deployment",
+    icon: Wrench,
+    description: "Version control, modern deployment platforms, and developer workflows.",
+    borderClass: "border-tools",
+    skills: [
+      { name: "Git", icon: SiGit, colorClass: "text-[#F05032]" },
+      { name: "GitHub", icon: SiGithub, colorClass: "text-white" },
+      { name: "Vercel", icon: SiVercel, colorClass: "text-white" },
+      { name: "Netlify", icon: SiNetlify, colorClass: "text-[#00C7B7]" },
+    ],
+  },
+];
 
 export default function Skills() {
   return (
     <section className="py-24 px-6 bg-slate-900/20" id="skills">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold">Skills</h2>
-          <p className="text-gray-500 mt-2">My Technical Level</p>
+          <h2 className="text-4xl font-bold">Skills & Technologies</h2>
+          <p className="text-gray-500 mt-2">
+            Technologies I use to build modern web applications
+          </p>
         </div>
-        
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Frontend Card */}
-          <div className="glass-card p-8">
-            <h3 className="text-2xl font-bold mb-8 text-center">Frontend Developer</h3>
-            <div className="grid grid-cols-2 gap-y-6">
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">HTML5</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">Next JS</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">TypeScript</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">Tailwind Css</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">JavaScript</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">React.JS</h4>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Backend Card */}
-          <div className="glass-card p-8">
-            <h3 className="text-2xl font-bold mb-8 text-center">Backend Developer</h3>
-            <div className="grid grid-cols-2 gap-y-6">
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">Node.js</h4>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          {skillCategories.map((category) => {
+            const CategoryIcon = category.icon;
+            return (
+              <div
+                key={category.title}
+                className="traveling-border-card group"
+              >
+                <div className={`border-mask ${category.borderClass}`} />
+                <div className="glass-card p-6 md:p-8 flex flex-col h-full relative z-10">
+                  <div className="flex items-center justify-between gap-4 mb-3">
+                    <div className="flex items-center gap-3.5">
+                      <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                        <CategoryIcon className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-xl font-bold">{category.title}</h3>
+                    </div>
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400">
+                      {category.skills.length} Items
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-gray-400 mb-6 leading-relaxed">
+                    {category.description}
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {category.skills.map((skill) => {
+                      const SkillIcon = skill.icon;
+                      return (
+                        <div
+                          key={skill.name}
+                          className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-emerald-500/20 hover:bg-white/10 transition-all duration-200 group/item"
+                        >
+                          <div className="w-9 h-9 rounded-lg glass-card flex items-center justify-center shrink-0 border border-white/10 group-hover/item:scale-105 transition-transform">
+                            <SkillIcon className={`w-5 h-5 ${skill.colorClass}`} />
+                          </div>
+                          <span className="text-sm font-medium text-gray-300 group-hover/item:text-white transition-colors">
+                            {skill.name}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">Express.js</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">MongoDB</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">REST API Development</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">Authentication (BetterAuth / JWT)</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
-                <div>
-                  <h4 className="font-medium text-sm">API Integration</h4>
-                </div>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
