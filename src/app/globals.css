@@ -267,64 +267,65 @@ html.light ::placeholder {
 
 /* Light Theme Traveling Border Visibility Enhancements */
 html.light .border-mask {
-  padding: 2.25px;
+  padding: 2.5px;
+  filter: drop-shadow(0 0 2.5px rgba(0, 0, 0, 0.12));
 }
 
 html.light .border-mask::before {
-  opacity: 0.95;
+  opacity: 1;
 }
 
-/* Frontend Development: Deep Royal Blue -> Deep Cyan */
+/* Frontend Development: Vibrant Blue -> Vibrant Cyan */
 html.light .border-frontend::before {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 190deg,
-    #1d4ed8 250deg,
-    #0284c7 310deg,
+    transparent 130deg,
+    #1d4ed8 210deg,
+    #0284c7 290deg,
     #1d4ed8 360deg
   );
 }
 
-/* Backend & Database: Deep Violet -> Deep Pink */
+/* Backend & Database: Vibrant Violet -> Vibrant Pink */
 html.light .border-backend::before {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 190deg,
-    #7c3aed 250deg,
-    #db2777 310deg,
+    transparent 130deg,
+    #7c3aed 210deg,
+    #db2777 290deg,
     #7c3aed 360deg
   );
 }
 
-/* UI Libraries & Authentication: Deep Emerald -> Deep Teal */
+/* UI Libraries & Authentication: Vibrant Emerald -> Vibrant Teal */
 html.light .border-ui-auth::before {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 190deg,
-    #059669 250deg,
-    #0d9488 310deg,
+    transparent 130deg,
+    #059669 210deg,
+    #0d9488 290deg,
     #059669 360deg
   );
 }
 
-/* Tools & Deployment: Deep Orange -> Deep Amber */
+/* Tools & Deployment: Vibrant Orange -> Vibrant Amber */
 html.light .border-tools::before {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 190deg,
-    #ea580c 250deg,
-    #d97706 310deg,
+    transparent 130deg,
+    #ea580c 210deg,
+    #d97706 290deg,
     #ea580c 360deg
   );
 }
 
 html.light .traveling-border-card:hover .border-mask::before {
   opacity: 1;
-  filter: brightness(1.2);
+  filter: brightness(1.25);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -530,6 +531,156 @@ html.light .hero-animated-ring::before {
     animation: none !important;
   }
 }
+
+/* Mobile Navigation Drawer Theme Styles */
+.mobile-nav-drawer {
+  background: #0f172a !important;
+  background-color: #0f172a !important;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  box-shadow: -10px 0 30px -5px rgba(0, 0, 0, 0.5);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+}
+
+.mobile-nav-header {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-title {
+  color: #f8fafc;
+}
+
+.mobile-nav-subtitle {
+  color: #94a3b8;
+}
+
+.mobile-nav-close {
+  color: #94a3b8;
+}
+
+.mobile-nav-close:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-link {
+  color: #cbd5e1;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:focus-visible {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(4px);
+}
+
+.mobile-nav-link:active {
+  background-color: rgba(255, 255, 255, 0.12);
+  transform: translateX(2px) scale(0.99);
+}
+
+.mobile-nav-arrow {
+  color: #34d399;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.mobile-nav-link:hover .mobile-nav-arrow {
+  transform: translateX(3px);
+}
+
+.mobile-nav-contact-btn {
+  background-color: #10b981;
+  color: #020617;
+  font-weight: 600;
+  box-shadow: 0 10px 20px -3px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-contact-btn:hover {
+  background-color: #34d399;
+  box-shadow: 0 12px 24px -3px rgba(52, 211, 153, 0.4);
+  transform: translateY(-1px);
+}
+
+.mobile-nav-contact-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.mobile-nav-footer {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+/* Light Theme Overrides for Mobile Nav Drawer */
+html.light .mobile-nav-drawer {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0;
+  color: #0f172a;
+  box-shadow: -10px 0 30px -5px rgba(0, 0, 0, 0.12);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.light .mobile-nav-header {
+  border-color: #e2e8f0;
+}
+
+html.light .mobile-nav-title {
+  color: #0f172a;
+}
+
+html.light .mobile-nav-subtitle {
+  color: #64748b;
+}
+
+html.light .mobile-nav-close {
+  color: #64748b;
+}
+
+html.light .mobile-nav-close:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+
+html.light .mobile-nav-link {
+  color: #334155;
+}
+
+html.light .mobile-nav-link:hover,
+html.light .mobile-nav-link:focus-visible {
+  color: #059669;
+  background-color: #f1f5f9;
+}
+
+html.light .mobile-nav-link:active {
+  background-color: #e2e8f0;
+}
+
+html.light .mobile-nav-arrow {
+  color: #059669;
+}
+
+html.light .mobile-nav-contact-btn {
+  background-color: #059669;
+  color: #ffffff;
+  box-shadow: 0 10px 20px -3px rgba(5, 150, 105, 0.25);
+}
+
+html.light .mobile-nav-contact-btn:hover {
+  background-color: #10b981;
+  box-shadow: 0 12px 24px -3px rgba(16, 185, 129, 0.35);
+}
+
+html.light .mobile-nav-footer {
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
 
 
 

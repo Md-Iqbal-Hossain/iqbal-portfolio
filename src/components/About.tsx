@@ -54,11 +54,11 @@ export default function About() {
             {/* Paragraph 1 with React Icon Card (Left) */}
             <div className="relative">
               <div
-                className="hidden sm:flex absolute -top-3 -left-3 md:-top-4 md:-left-8 lg:-left-12 z-20 pointer-events-none select-none animate-tech-card-entrance"
+                className="flex absolute -top-3 left-0 sm:-top-3 sm:-left-3 md:-top-4 md:-left-8 lg:-left-12 z-20 pointer-events-none select-none animate-tech-card-entrance"
                 aria-hidden="true"
               >
-                <div className="animate-float-card-1 glass-card p-2.5 flex items-center justify-center shadow-md shadow-black/5 rounded-xl border border-white/10">
-                  <FaReact className="w-5 h-5 text-[#61DAFB]" />
+                <div className="animate-float-card-1 glass-card p-1.5 sm:p-2.5 flex items-center justify-center shadow-md shadow-black/5 rounded-lg sm:rounded-xl border border-white/10">
+                  <FaReact className="w-4 h-4 sm:w-5 sm:h-5 text-[#61DAFB]" />
                 </div>
               </div>
               <p>
@@ -69,11 +69,11 @@ export default function About() {
             {/* Paragraph 2 with Next.js Icon Card (Right) */}
             <div className="relative">
               <div
-                className="hidden sm:flex absolute -top-3 -right-3 md:-top-4 md:-right-8 lg:-right-12 z-20 pointer-events-none select-none animate-tech-card-entrance"
+                className="flex absolute -top-3 right-0 sm:-top-3 sm:-right-3 md:-top-4 md:-right-8 lg:-right-12 z-20 pointer-events-none select-none animate-tech-card-entrance"
                 aria-hidden="true"
               >
-                <div className="animate-float-card-2 glass-card p-2.5 flex items-center justify-center shadow-md shadow-black/5 rounded-xl border border-white/10">
-                  <SiNextdotjs className="w-5 h-5 text-white" />
+                <div className="animate-float-card-2 glass-card p-1.5 sm:p-2.5 flex items-center justify-center shadow-md shadow-black/5 rounded-lg sm:rounded-xl border border-white/10">
+                  <SiNextdotjs className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
               </div>
               <p>
@@ -84,11 +84,11 @@ export default function About() {
             {/* Paragraph 3 with Node.js Icon Card (Left) */}
             <div className="relative">
               <div
-                className="hidden sm:flex absolute -top-3 -left-3 md:-top-4 md:-left-8 lg:-left-12 z-20 pointer-events-none select-none animate-tech-card-entrance"
+                className="flex absolute -top-3 left-0 sm:-top-3 sm:-left-3 md:-top-4 md:-left-8 lg:-left-12 z-20 pointer-events-none select-none animate-tech-card-entrance"
                 aria-hidden="true"
               >
-                <div className="animate-float-card-3 glass-card p-2.5 flex items-center justify-center shadow-md shadow-black/5 rounded-xl border border-white/10">
-                  <SiNodedotjs className="w-5 h-5 text-[#339933]" />
+                <div className="animate-float-card-3 glass-card p-1.5 sm:p-2.5 flex items-center justify-center shadow-md shadow-black/5 rounded-lg sm:rounded-xl border border-white/10">
+                  <SiNodedotjs className="w-4 h-4 sm:w-5 sm:h-5 text-[#339933]" />
                 </div>
               </div>
               <p>
