@@ -33,6 +33,11 @@ export default function Header() {
     { name: "About Me", href: "#about" },
     { name: "Skills", href: "#skills" },
     { name: "Projects", href: "#projects" },
+    {
+      name: "Credentials & Experience",
+      shortName: "Credentials",
+      href: "#credentials",
+    },
   ];
 
   return (
@@ -56,14 +61,21 @@ export default function Header() {
         {/* Navigation & Actions */}
         <div className="flex items-center space-x-3 md:space-x-6">
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-400">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8 text-sm font-medium text-gray-400">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 className="hover:text-white transition-colors"
                 href={link.href}
               >
-                {link.name}
+                {link.shortName ? (
+                  <>
+                    <span className="hidden xl:inline">{link.name}</span>
+                    <span className="xl:hidden">{link.shortName}</span>
+                  </>
+                ) : (
+                  link.name
+                )}
               </a>
             ))}
             <a

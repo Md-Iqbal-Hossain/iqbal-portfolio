@@ -30,6 +30,11 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a className="hover:text-white" href="#credentials">
+                  Credentials & Experience
+                </a>
+              </li>
+              <li>
                 <a className="hover:text-white" href="#services">
                   Services
                 </a>
