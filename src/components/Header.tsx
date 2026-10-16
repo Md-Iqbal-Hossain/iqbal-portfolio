@@ -53,7 +53,7 @@ export default function Header() {
             className="w-7 h-7 md:w-8 md:h-8 object-contain transition-transform group-hover:scale-105"
             priority
           />
-          <span className="text-base sm:text-lg md:text-xl font-bold tracking-widest uppercase truncate max-w-[180px] xs:max-w-none">
+          <span className="text-base sm:text-lg md:text-xl font-bold tracking-widest uppercase whitespace-nowrap">
             Md.Iqbal Hossain
           </span>
         </a>
