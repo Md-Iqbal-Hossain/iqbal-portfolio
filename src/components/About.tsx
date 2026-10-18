@@ -1,8 +1,12 @@
+"use client";
+
 import React from "react";
 import { FaReact } from "react-icons/fa";
 import { SiNextdotjs, SiNodedotjs } from "react-icons/si";
+import { featuredProjectsData, allProjectsData } from "./Projects";
 
 export default function About() {
+  const totalProjects = featuredProjectsData.length + allProjectsData.length;
   return (
     <section className="py-24 px-6 bg-slate-900/30" id="about">
       <div className="max-w-4xl mx-auto">
@@ -34,7 +38,7 @@ export default function About() {
                 💼
               </span>
               <h3 className="font-bold text-sm md:text-base leading-tight">Completed</h3>
-              <p className="text-xs text-gray-400 mt-0.5">5+ Projects</p>
+              <p className="text-xs text-gray-400 mt-0.5">{totalProjects}+ Projects</p>
             </div>
 
             {/* Support */}

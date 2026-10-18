@@ -251,8 +251,10 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { featuredProjectsData, allProjectsData } from "./Projects";
 
 export default function Hero() {
+  const totalProjects = featuredProjectsData.length + allProjectsData.length;
   const roles = ["Web Designer", "Web Developer", "Problem Solver"];
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
@@ -413,7 +415,7 @@ export default function Hero() {
               <span className="text-2xl">🏆</span>
               <div>
                 <p className="text-xs text-gray-400">Finished Projects</p>
-                <p className="font-bold">5+</p>
+                <p className="font-bold">{totalProjects}+</p>
               </div>
             </div>
             <div className="relative w-full h-full animate-float motion-reduce:animate-none">
