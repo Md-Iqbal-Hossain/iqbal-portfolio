@@ -1,68 +1,150 @@
 import React from "react";
+import Image from "next/image";
+import { FaEnvelope, FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
+
+const quickLinksCol1 = [
+  { name: "Home", href: "#home" },
+  { name: "About Me", href: "#about" },
+  { name: "Skills", href: "#skills" },
+];
+
+const quickLinksCol2 = [
+  { name: "Projects", href: "#projects" },
+  { name: "Credentials & Experience", href: "#credentials" },
+  { name: "Contact Me", href: "#contact" },
+];
+
+const socialLinks = [
+  {
+    name: "Email",
+    href: "mailto:iqbalhossain6615@gmail.com",
+    ariaLabel: "Email Md. Iqbal Hossain",
+    icon: FaEnvelope,
+    isExternal: false,
+  },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/md-iqbalhossain-bd/",
+    ariaLabel: "Visit Md. Iqbal Hossain's LinkedIn profile (opens in a new tab)",
+    icon: FaLinkedin,
+    isExternal: true,
+  },
+  {
+    name: "WhatsApp",
+    href: "https://wa.me/8801853264661",
+    ariaLabel: "Chat with Md. Iqbal Hossain on WhatsApp (opens in a new tab)",
+    icon: FaWhatsapp,
+    isExternal: true,
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/Md-Iqbal-Hossain",
+    ariaLabel: "Visit Md. Iqbal Hossain's GitHub profile (opens in a new tab)",
+    icon: FaGithub,
+    isExternal: true,
+  },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-black py-16 px-6 border-t border-white/5">
+    <footer className="bg-black py-12 sm:py-16 px-6 border-t border-white/5 transition-colors">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Md. Iqbal Hossain</h2>
-            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 pb-12">
+          {/* Column 1: Logo & Identity */}
+          <div className="flex flex-col">
+            <div className="flex items-center h-8">
+              <a
+                href="#home"
+                className="inline-flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-md"
+              >
+                <Image
+                  src="/images/my_favicon.png"
+                  alt="Md. Iqbal Hossain Logo"
+                  width={32}
+                  height={32}
+                  className="w-7 h-7 md:w-8 md:h-8 object-contain transition-transform duration-200 group-hover:scale-105"
+                />
+                <span className="text-base sm:text-lg md:text-xl font-bold tracking-widest uppercase text-white whitespace-nowrap">
+                  Md.Iqbal Hossain
+                </span>
+              </a>
+            </div>
+            <p className="mt-4 text-sm text-gray-400 leading-relaxed max-w-sm">
               Full Stack Developer passionate about creating beautiful and functional web experiences.
             </p>
           </div>
-          <div>
-            <h3 className="font-bold mb-6 text-gray-300">Quick Links</h3>
-            <ul className="space-y-4 text-sm text-gray-500">
-              <li>
-                <a className="hover:text-white" href="#about">
-                  About
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#skills">
-                  Skills
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#projects">
-                  Projects
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#credentials">
-                  Credentials & Experience
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#services">
-                  Services
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#contact">
-                  Contact
-                </a>
-              </li>
-            </ul>
+
+          {/* Column 2: Quick Links (Centered Heading & Transparent-by-Default Navigation Links) */}
+          <div className="flex flex-col md:px-2 lg:px-4">
+            <div className="flex items-center justify-center h-8">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-200 text-center">
+                Quick Links
+              </h3>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-1.5 sm:gap-2 text-xs w-full max-w-[280px] sm:max-w-[300px] mx-auto">
+              {/* Sub-column 1 */}
+              <ul className="flex flex-col gap-1.5">
+                {quickLinksCol1.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="w-full min-h-[28px] sm:min-h-[30px] px-2 py-1 rounded-md border border-transparent bg-transparent text-gray-400 hover:text-emerald-400 hover:border-white/15 hover:bg-white/[0.03] transition-all duration-200 flex items-center justify-center text-center text-[11px] sm:text-xs font-medium leading-tight break-words focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 focus-visible:ring-offset-1 focus-visible:ring-offset-black hover:-translate-y-0.5 motion-reduce:transform-none"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Sub-column 2 */}
+              <ul className="flex flex-col gap-1.5">
+                {quickLinksCol2.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="w-full min-h-[28px] sm:min-h-[30px] px-2 py-1 rounded-md border border-transparent bg-transparent text-gray-400 hover:text-emerald-400 hover:border-white/15 hover:bg-white/[0.03] transition-all duration-200 flex items-center justify-center text-center text-[11px] sm:text-xs font-medium leading-tight break-words focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 focus-visible:ring-offset-1 focus-visible:ring-offset-black hover:-translate-y-0.5 motion-reduce:transform-none"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div>
-            <h3 className="font-bold mb-6 text-gray-300">Connect With Me</h3>
-            <div className="flex gap-4">
-              <a className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-sm" href="#">
-                GitHub
-              </a>
-              <a className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-sm" href="#">
-                LinkedIn
-              </a>
-              <a className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-sm" href="#">
-                Twitter
-              </a>
+
+          {/* Column 3: Social & Contact Links */}
+          <div className="flex flex-col md:pl-4 lg:pl-8">
+            <div className="flex items-center h-8">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-200">
+                Connect With Me
+              </h3>
+            </div>
+            <div className="mt-4 flex items-center gap-3 flex-wrap">
+              {socialLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    aria-label={link.ariaLabel}
+                    {...(link.isExternal
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-emerald-400 hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black motion-reduce:transform-none motion-reduce:transition-none"
+                  >
+                    <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
-        <div className="pt-12 border-t border-white/5 text-center text-xs text-gray-600">
-          © 2026 Md.Iqbal Hossain. All rights reserved. Built with Next.js & Tailwind CSS.
+
+        {/* Bottom Bar: Copyright & Attribution */}
+        <div className="pt-8 border-t border-white/5 text-center text-xs text-gray-500">
+          <p>
+            {`© ${new Date().getFullYear()} Md. Iqbal Hossain. All rights reserved. Built with Next.js & Tailwind CSS.`}
+          </p>
         </div>
       </div>
     </footer>
