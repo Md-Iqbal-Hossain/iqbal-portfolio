@@ -1,6 +1,13 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import Image from "next/image";
 import { FaEnvelope, FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
+import {
+  gsap,
+  useGSAP,
+  isReducedMotion,
+} from "@/lib/gsap";
 
 const quickLinks = [
   { name: "Home", href: "#home" },
@@ -43,12 +50,62 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (isReducedMotion()) return;
+
+      // Coordinated footer entrance with safe viewport trigger
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: footerRef.current,
+          start: "top bottom-=30",
+          once: true,
+        },
+      });
+
+      tl.from(".footer-column", {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: "power2.out",
+        clearProps: "transform,opacity",
+      })
+      .from(
+        ".footer-social-icon",
+        {
+          opacity: 0,
+          y: 10,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power2.out",
+          clearProps: "transform,opacity",
+        },
+        "-=0.3"
+      )
+      .from(
+        ".footer-copyright",
+        {
+          opacity: 0,
+          y: 10,
+          duration: 0.5,
+          ease: "power2.out",
+          clearProps: "transform,opacity",
+        },
+        "-=0.2"
+      );
+    },
+    { scope: footerRef }
+  );
+
   return (
-    <footer className="bg-black py-12 sm:py-16 px-6 border-t border-white/5 transition-colors">
+    <footer ref={footerRef} className="bg-black py-12 sm:py-16 px-6 border-t border-white/5 transition-colors">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 pb-12">
           {/* Column 1: Logo & Identity */}
-          <div className="flex flex-col">
+          <div className="footer-column flex flex-col">
             <div className="flex items-center h-8">
               <a
                 href="#home"
@@ -71,14 +128,14 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2: Quick Links (Centered Heading & Compact 3x2 Grid) */}
-          <div className="flex flex-col md:px-2 lg:px-4">
-            <div className="flex items-center justify-center h-8">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-200 text-center">
+          {/* Column 2: Quick Links (Centered Heading on Desktop, Left-Aligned on Mobile & Compact 3x2 Grid) */}
+          <div className="footer-column flex flex-col md:px-2 lg:px-4">
+            <div className="flex items-center justify-start md:justify-center h-8">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-200 text-left md:text-center">
                 Quick Links
               </h3>
             </div>
-            <ul className="mt-2.5 grid grid-cols-3 gap-x-1 gap-y-1 text-xs w-full max-w-sm mx-auto">
+            <ul className="mt-2.5 grid grid-cols-3 gap-x-1 gap-y-1 text-xs w-full max-w-sm mx-0 md:mx-auto">
               {quickLinks.map((link) => (
                 <li key={link.name} className="flex">
                   <a
@@ -93,7 +150,7 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Social & Contact Links */}
-          <div className="flex flex-col md:pl-4 lg:pl-8">
+          <div className="footer-column flex flex-col md:pl-4 lg:pl-8">
             <div className="flex items-center h-8">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-200">
                 Connect With Me
@@ -110,7 +167,7 @@ export default function Footer() {
                     {...(link.isExternal
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-emerald-400 hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black motion-reduce:transform-none motion-reduce:transition-none"
+                    className="footer-social-icon w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-emerald-400 hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black motion-reduce:transform-none motion-reduce:transition-none"
                   >
                     <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
                   </a>
@@ -121,7 +178,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar: Copyright & Attribution */}
-        <div className="pt-8 border-t border-white/5 text-center text-xs text-gray-500">
+        <div className="footer-copyright pt-8 border-t border-white/5 text-center text-xs text-gray-500">
           <p>
             {`© ${new Date().getFullYear()} Md. Iqbal Hossain. All rights reserved. Built with Next.js & Tailwind CSS.`}
           </p>

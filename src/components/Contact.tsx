@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Mail, Send, Loader2, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
 import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import {
+  gsap,
+  useGSAP,
+  isReducedMotion,
+  triggerEmeraldGlow,
+  ANIMATION_PRESETS,
+} from "@/lib/gsap";
 
 interface FormData {
   name: string;
@@ -26,12 +33,83 @@ const initialFormData: FormData = {
 };
 
 export default function Contact() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [status, setStatus] = useState<SubmissionStatus>({
     state: "idle",
     message: "",
   });
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  useGSAP(
+    () => {
+      if (isReducedMotion()) return;
+
+      // Section header fade-up reveal
+      gsap.from(".contact-header", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".contact-header",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
+
+      // Left column intro fade-up reveal
+      gsap.from(".contact-intro", {
+        opacity: 0,
+        y: 20,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".contact-intro",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
+
+      // Contact cards staggered reveal with subtle emerald glow
+      gsap.from(".contact-card", {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".contact-cards-list",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        onComplete: () => {
+          triggerEmeraldGlow(".contact-card", 0.1);
+          gsap.set(".contact-card", { clearProps: "transform,opacity" });
+        },
+      });
+
+      // Right column form container fade-up reveal
+      gsap.from(".contact-form-card", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".contact-form-card",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        onComplete: () => {
+          triggerEmeraldGlow(".contact-form-card", 0.1);
+          gsap.set(".contact-form-card", { clearProps: "transform,opacity" });
+        },
+      });
+    },
+    { scope: sectionRef }
+  );
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
@@ -170,10 +248,10 @@ export default function Contact() {
   };
 
   return (
-    <section className="py-20 md:py-24 px-6 relative" id="contact">
+    <section ref={sectionRef} className="py-20 md:py-24 px-6 relative" id="contact">
       <div className="max-w-6xl mx-auto">
         {/* Section Header: Clean Hierarchy with Eyebrow and Single Prominent Heading */}
-        <div className="text-center mb-14 md:mb-16">
+        <div className="contact-header text-center mb-14 md:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 [html.light_&]:text-emerald-700 border border-emerald-500/20 mb-3 tracking-wide uppercase">
             <span
               className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"
@@ -190,7 +268,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Refined Introduction & Compact Contact Cards */}
           <div className="lg:col-span-5 space-y-6">
-            <div>
+            <div className="contact-intro">
               <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white [html.light_&]:text-slate-900 mb-2.5">
                 Let&apos;s Connect
               </h3>
@@ -200,12 +278,12 @@ export default function Contact() {
             </div>
 
             {/* Compact, Consistent Contact Cards */}
-            <div className="space-y-3 pt-1">
+            <div className="contact-cards-list space-y-3 pt-1">
               {/* Email Card */}
               <a
                 href="mailto:iqbalhossain6615@gmail.com"
                 aria-label="Send an email to iqbalhossain6615@gmail.com"
-                className="glass-card p-3.5 sm:p-4 rounded-xl border border-white/10 [html.light_&]:border-slate-200/90 transition-all duration-200 hover:border-emerald-500/40 hover:-translate-y-0.5 hover:shadow-md flex items-center justify-between gap-3 group motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                className="contact-card glass-card p-3.5 sm:p-4 rounded-xl border border-white/10 [html.light_&]:border-slate-200/90 transition-all duration-200 hover:border-emerald-500/40 hover:-translate-y-0.5 hover:shadow-md flex items-center justify-between gap-3 group motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform duration-200 shrink-0 motion-reduce:transform-none">
@@ -232,7 +310,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Visit Md Iqbal Hossain's LinkedIn profile (opens in new tab)"
-                className="glass-card p-3.5 sm:p-4 rounded-xl border border-white/10 [html.light_&]:border-slate-200/90 transition-all duration-200 hover:border-blue-500/40 hover:-translate-y-0.5 hover:shadow-md flex items-center justify-between gap-3 group motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                className="contact-card glass-card p-3.5 sm:p-4 rounded-xl border border-white/10 [html.light_&]:border-slate-200/90 transition-all duration-200 hover:border-blue-500/40 hover:-translate-y-0.5 hover:shadow-md flex items-center justify-between gap-3 group motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 transition-transform duration-200 shrink-0 motion-reduce:transform-none">
@@ -259,7 +337,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat on WhatsApp with +8801853264661 (opens in new tab)"
-                className="glass-card p-3.5 sm:p-4 rounded-xl border border-white/10 [html.light_&]:border-slate-200/90 transition-all duration-200 hover:border-green-500/40 hover:-translate-y-0.5 hover:shadow-md flex items-center justify-between gap-3 group motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                className="contact-card glass-card p-3.5 sm:p-4 rounded-xl border border-white/10 [html.light_&]:border-slate-200/90 transition-all duration-200 hover:border-green-500/40 hover:-translate-y-0.5 hover:shadow-md flex items-center justify-between gap-3 group motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-10 h-10 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 group-hover:scale-105 transition-transform duration-200 shrink-0 motion-reduce:transform-none">
@@ -284,7 +362,7 @@ export default function Contact() {
 
           {/* Right Column: Contact Form */}
           <div className="lg:col-span-7">
-            <div className="glass-card p-6 sm:p-7 md:p-8 rounded-2xl border border-white/10 [html.light_&]:border-slate-200/90 shadow-lg">
+            <div className="contact-form-card glass-card p-6 sm:p-7 md:p-8 rounded-2xl border border-white/10 [html.light_&]:border-slate-200/90 shadow-lg">
               <form onSubmit={handleSubmit} noValidate className="space-y-5">
                 {/* Status Messages */}
                 {status.state === "success" && (

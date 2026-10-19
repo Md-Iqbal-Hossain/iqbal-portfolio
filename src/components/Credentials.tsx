@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   GraduationCap,
   Award,
@@ -9,6 +9,13 @@ import {
   ExternalLink,
   CheckCircle2,
 } from "lucide-react";
+import {
+  gsap,
+  useGSAP,
+  isReducedMotion,
+  triggerEmeraldGlow,
+  ANIMATION_PRESETS,
+} from "@/lib/gsap";
 
 interface CredentialItem {
   id: string;
@@ -110,40 +117,45 @@ const credentialsData: CredentialItem[] = [
 
 export default function Credentials() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    // Respect prefers-reduced-motion immediately
-    if (typeof window !== "undefined") {
-      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-      if (motionQuery.matches) {
-        setIsVisible(true);
-        return;
-      }
-    }
+  useGSAP(
+    () => {
+      if (isReducedMotion()) return;
 
-    const currentSection = sectionRef.current;
-    if (!currentSection) return;
+      // Section header fade-up reveal
+      gsap.from(".credentials-header", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".credentials-header",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -40px 0px",
-      }
-    );
-
-    observer.observe(currentSection);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+      // Staggered credentials cards reveal with subtle emerald glow
+      gsap.from(".credentials-card", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        stagger: ANIMATION_PRESETS.stagger.cards,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".credentials-cards-grid",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        onComplete: () => {
+          triggerEmeraldGlow(".credentials-card", 0.1);
+          gsap.set(".credentials-card", { clearProps: "transform,opacity" });
+        },
+      });
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section
@@ -159,7 +171,7 @@ export default function Credentials() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="credentials-header text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 [html.light_&]:text-emerald-700 border border-emerald-500/20 mb-3 tracking-wide uppercase">
             <span
               className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"
@@ -176,8 +188,8 @@ export default function Credentials() {
         </div>
 
         {/* 3 Responsive Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          {credentialsData.map((item, index) => {
+        <div className="credentials-cards-grid grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          {credentialsData.map((item) => {
             const Icon = item.icon;
 
             return (
@@ -186,14 +198,7 @@ export default function Credentials() {
                 tabIndex={0}
                 role="region"
                 aria-label={item.title}
-                style={{
-                  transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
-                }}
-                className={`glass-card relative rounded-2xl p-6 sm:p-7 flex flex-col justify-between overflow-hidden group border border-white/10 hover:border-emerald-500/40 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 focus-within:-translate-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/70 focus-visible:border-emerald-500/50 transition-all duration-300 ease-out cursor-default motion-reduce:transform-none motion-reduce:transition-none motion-reduce:opacity-100 ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-[18px]"
-                }`}
+                className="credentials-card glass-card relative rounded-2xl p-6 sm:p-7 flex flex-col justify-between overflow-hidden group border border-white/10 hover:border-emerald-500/40 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 focus-within:-translate-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/70 focus-visible:border-emerald-500/50 transition-all duration-300 ease-out cursor-default motion-reduce:transform-none motion-reduce:transition-none"
               >
                 {/* Expanding emerald top accent line */}
                 <div

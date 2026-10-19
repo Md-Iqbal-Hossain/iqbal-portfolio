@@ -11,6 +11,14 @@ import {
   ChevronRight,
   FolderGit2,
 } from "lucide-react";
+import {
+  gsap,
+  ScrollTrigger,
+  useGSAP,
+  isReducedMotion,
+  triggerEmeraldGlow,
+  ANIMATION_PRESETS,
+} from "@/lib/gsap";
 
 export interface Project {
   id: string;
@@ -274,7 +282,7 @@ export const allProjectsData: Project[] = [
   },
 ];
 
-const PROJECTS_PER_PAGE = 6;
+const PROJECTS_PER_PAGE = 3;
 
 interface ProjectCardProps {
   project: Project;
@@ -501,6 +509,10 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
 export default function Projects() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(allProjectsData.length / PROJECTS_PER_PAGE);
+  const sectionRef = useRef<HTMLElement>(null);
+  const allProjectsRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
+  const isPaginating = useRef(false);
 
   const startIndex = (currentPage - 1) * PROJECTS_PER_PAGE;
   const currentProjects = allProjectsData.slice(
@@ -508,19 +520,152 @@ export default function Projects() {
     startIndex + PROJECTS_PER_PAGE
   );
 
-  const handlePageChange = (newPage: number) => {
-    if (newPage < 1 || newPage > totalPages) return;
-    setCurrentPage(newPage);
+  // General entrance animations for section headers and featured projects
+  useGSAP(
+    () => {
+      if (isReducedMotion()) return;
 
-    // Smoothly reposition view to All Projects anchor
-    const allProjectsElement = document.getElementById("all-projects");
-    if (allProjectsElement) {
-      allProjectsElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+      // Section header fade-up reveal
+      gsap.from(".projects-header", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".projects-header",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
+
+      // Featured projects header fade-up reveal
+      gsap.from(".featured-projects-header", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".featured-projects-header",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
+
+      // Featured project cards staggered reveal with subtle emerald glow
+      gsap.from(".featured-card-wrapper", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        stagger: ANIMATION_PRESETS.stagger.cards,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".featured-cards-grid",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        onComplete: () => {
+          triggerEmeraldGlow(".featured-card-wrapper > div", 0.1);
+          gsap.set(".featured-card-wrapper", { clearProps: "transform,opacity" });
+        },
+      });
+
+      // All projects header fade-up reveal
+      gsap.from(".all-projects-header", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".all-projects-header",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
+    },
+    { scope: sectionRef }
+  );
+
+  // Paginated all projects cards animation (triggers on scroll entrance and re-animates on page change)
+  useGSAP(
+    () => {
+      if (isReducedMotion()) {
+        ScrollTrigger.refresh();
+        return;
+      }
+
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+        // First entrance bound to scroll
+        gsap.from(".all-project-card-wrapper", {
+          opacity: 0,
+          y: ANIMATION_PRESETS.fadeUp.y,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: ANIMATION_PRESETS.fadeUp.ease,
+          scrollTrigger: {
+            trigger: ".all-projects-grid",
+            start: ANIMATION_PRESETS.scrollTrigger.start,
+            once: true,
+          },
+          clearProps: "transform,opacity",
+        });
+      } else {
+        // Smooth staggered reveal on pagination page change
+        gsap.fromTo(
+          ".all-project-card-wrapper",
+          { opacity: 0, y: 18 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            stagger: 0.06,
+            ease: "power2.out",
+            clearProps: "transform,opacity",
+            onComplete: () => {
+              // Refresh triggers only after cards reveal and scroll settle
+              ScrollTrigger.refresh();
+            },
+          }
+        );
+      }
+    },
+    { dependencies: [currentPage], scope: sectionRef }
+  );
+
+  // Scroll to All Projects subsection after new page cards have rendered and layout has updated
+  useEffect(() => {
+    if (!isPaginating.current) return;
+    isPaginating.current = false;
+
+    const rafId = requestAnimationFrame(() => {
+      const el = allProjectsRef.current || document.getElementById("all-projects");
+      if (el) {
+        const navHeight = 64; // fixed navbar height (h-16)
+        const buffer = 16;
+        const targetTop =
+          el.getBoundingClientRect().top + window.scrollY - (navHeight + buffer);
+
+        window.scrollTo({
+          top: Math.max(0, targetTop),
+          behavior: "smooth",
+        });
+      }
+    });
+
+    return () => cancelAnimationFrame(rafId);
+  }, [currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
+    isPaginating.current = true;
+    setCurrentPage(newPage);
   };
 
   return (
-    <section className="relative py-24 px-6 overflow-hidden" id="projects">
+    <section ref={sectionRef} className="relative py-24 px-6 overflow-hidden" id="projects">
       {/* Ambient background glow */}
       <div
         aria-hidden="true"
@@ -529,7 +674,7 @@ export default function Projects() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="projects-header text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 [html.light_&]:text-emerald-700 border border-emerald-500/20 mb-3 tracking-wide uppercase">
             <span
               className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"
@@ -547,7 +692,7 @@ export default function Projects() {
 
         {/* 1. Featured Projects Section */}
         <div className="mb-20">
-          <div className="flex items-center justify-between mb-8 pb-3 border-b border-white/5 [html.light_&]:border-slate-200">
+          <div className="featured-projects-header flex items-center justify-between mb-8 pb-3 border-b border-white/5 [html.light_&]:border-slate-200">
             <div className="flex items-center gap-3">
               <span
                 className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"
@@ -562,20 +707,21 @@ export default function Projects() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="featured-cards-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
             {featuredProjectsData.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                isFeatured={true}
-              />
+              <div key={project.id} className="featured-card-wrapper h-full flex flex-col">
+                <ProjectCard
+                  project={project}
+                  isFeatured={true}
+                />
+              </div>
             ))}
           </div>
         </div>
 
         {/* 2. All Projects Section */}
-        <div id="all-projects" className="scroll-mt-24">
-          <div className="flex items-center justify-between mb-8 pb-3 border-b border-white/5 [html.light_&]:border-slate-200">
+        <div id="all-projects" ref={allProjectsRef} className="scroll-mt-24">
+          <div className="all-projects-header flex items-center justify-between mb-8 pb-3 border-b border-white/5 [html.light_&]:border-slate-200">
             <div className="flex items-center gap-3">
               <span
                 className="flex h-2.5 w-2.5 rounded-full bg-blue-500 ring-4 ring-blue-500/20"
@@ -590,13 +736,14 @@ export default function Projects() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="all-projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
             {currentProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                isFeatured={false}
-              />
+              <div key={project.id} className="all-project-card-wrapper h-full flex flex-col">
+                <ProjectCard
+                  project={project}
+                  isFeatured={false}
+                />
+              </div>
             ))}
           </div>
 

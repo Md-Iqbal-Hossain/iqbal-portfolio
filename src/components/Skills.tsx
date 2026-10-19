@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import { 
   SiJavascript, 
   SiTypescript, 
@@ -29,6 +31,13 @@ import {
   Database, 
   Lock 
 } from "lucide-react";
+import {
+  gsap,
+  useGSAP,
+  isReducedMotion,
+  triggerEmeraldGlow,
+  ANIMATION_PRESETS,
+} from "@/lib/gsap";
 
 interface SkillItem {
   name: string;
@@ -103,23 +112,79 @@ const skillCategories: SkillCategory[] = [
 ];
 
 export default function Skills() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (isReducedMotion()) return;
+
+      // Section header fade-up reveal
+      gsap.from(".skills-heading", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".skills-heading",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
+
+      // Staggered category cards reveal
+      gsap.from(".skills-category-card", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        stagger: ANIMATION_PRESETS.stagger.cards,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".skills-grid-container",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        onComplete: () => {
+          triggerEmeraldGlow(".skills-category-card", 0.1);
+          gsap.set(".skills-category-card", { clearProps: "transform,opacity" });
+        },
+      });
+
+      // Staggered skill badges reveal
+      gsap.from(".skills-badge-item", {
+        opacity: 0,
+        y: 12,
+        duration: 0.5,
+        stagger: ANIMATION_PRESETS.stagger.badges,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".skills-grid-container",
+          start: "top 80%",
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section className="py-24 px-6 bg-slate-900/20" id="skills">
+    <section ref={sectionRef} className="py-24 px-6 bg-slate-900/20" id="skills">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="skills-heading text-center mb-16">
           <h2 className="text-4xl font-bold">Skills & Technologies</h2>
           <p className="text-gray-500 mt-2">
             Technologies I use to build modern web applications
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="skills-grid-container grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {skillCategories.map((category) => {
             const CategoryIcon = category.icon;
             return (
               <div
                 key={category.title}
-                className="traveling-border-card group"
+                className="skills-category-card traveling-border-card group"
               >
                 <div className={`border-mask ${category.borderClass}`} />
                 <div className="glass-card p-6 md:p-8 flex flex-col h-full relative z-10">
@@ -145,7 +210,7 @@ export default function Skills() {
                       return (
                         <div
                           key={skill.name}
-                          className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-emerald-500/20 hover:bg-white/10 transition-all duration-200 group/item"
+                          className="skills-badge-item flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-emerald-500/20 hover:bg-white/10 transition-all duration-200 group/item"
                         >
                           <div className="w-9 h-9 rounded-lg glass-card flex items-center justify-center shrink-0 border border-white/10 group-hover/item:scale-105 transition-transform">
                             <SkillIcon className={`w-5 h-5 ${skill.colorClass}`} />

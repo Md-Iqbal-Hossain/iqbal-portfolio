@@ -1,7 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Code2, Server, Layers, CheckCircle2 } from "lucide-react";
+import {
+  gsap,
+  useGSAP,
+  isReducedMotion,
+  triggerEmeraldGlow,
+  ANIMATION_PRESETS,
+} from "@/lib/gsap";
 
 interface ServiceItem {
   number: string;
@@ -56,40 +63,45 @@ const servicesData: ServiceItem[] = [
 
 export default function Services() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    // Respect prefers-reduced-motion immediately
-    if (typeof window !== "undefined") {
-      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-      if (motionQuery.matches) {
-        setIsVisible(true);
-        return;
-      }
-    }
+  useGSAP(
+    () => {
+      if (isReducedMotion()) return;
 
-    const currentSection = sectionRef.current;
-    if (!currentSection) return;
+      // Section header fade-up reveal
+      gsap.from(".services-header", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".services-header",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        clearProps: "transform,opacity",
+      });
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -40px 0px",
-      }
-    );
-
-    observer.observe(currentSection);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+      // Staggered service cards reveal with subtle emerald glow
+      gsap.from(".services-card", {
+        opacity: 0,
+        y: ANIMATION_PRESETS.fadeUp.y,
+        duration: ANIMATION_PRESETS.fadeUp.duration,
+        stagger: ANIMATION_PRESETS.stagger.cards,
+        ease: ANIMATION_PRESETS.fadeUp.ease,
+        scrollTrigger: {
+          trigger: ".services-cards-grid",
+          start: ANIMATION_PRESETS.scrollTrigger.start,
+          once: true,
+        },
+        onComplete: () => {
+          triggerEmeraldGlow(".services-card", 0.1);
+          gsap.set(".services-card", { clearProps: "transform,opacity" });
+        },
+      });
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section
@@ -105,7 +117,7 @@ export default function Services() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="services-header text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-3 tracking-wide uppercase">
             <span
               className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"
@@ -122,8 +134,8 @@ export default function Services() {
         </div>
 
         {/* 3 Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          {servicesData.map((service, index) => {
+        <div className="services-cards-grid grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          {servicesData.map((service) => {
             const Icon = service.icon;
 
             return (
@@ -132,14 +144,7 @@ export default function Services() {
                 tabIndex={0}
                 role="region"
                 aria-label={service.title}
-                style={{
-                  transitionDelay: isVisible ? `${index * 140}ms` : "0ms",
-                }}
-                className={`glass-card relative rounded-2xl p-7 sm:p-8 flex flex-col justify-between overflow-hidden group border border-white/10 hover:border-emerald-500/40 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 focus-within:-translate-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/70 focus-visible:border-emerald-500/50 transition-all duration-500 ease-out cursor-default motion-reduce:transform-none motion-reduce:transition-none motion-reduce:opacity-100 ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
+                className="services-card glass-card relative rounded-2xl p-7 sm:p-8 flex flex-col justify-between overflow-hidden group border border-white/10 hover:border-emerald-500/40 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 focus-within:-translate-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/70 focus-visible:border-emerald-500/50 transition-all duration-300 ease-out cursor-default motion-reduce:transform-none motion-reduce:transition-none"
               >
                 {/* Expanding emerald top accent line */}
                 <div
