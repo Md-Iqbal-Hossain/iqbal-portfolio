@@ -2,13 +2,10 @@ import React from "react";
 import Image from "next/image";
 import { FaEnvelope, FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
 
-const quickLinksCol1 = [
+const quickLinks = [
   { name: "Home", href: "#home" },
   { name: "About Me", href: "#about" },
   { name: "Skills", href: "#skills" },
-];
-
-const quickLinksCol2 = [
   { name: "Projects", href: "#projects" },
   { name: "Credentials & Experience", href: "#credentials" },
   { name: "Contact Me", href: "#contact" },
@@ -74,42 +71,25 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2: Quick Links (Centered Heading & Transparent-by-Default Navigation Links) */}
+          {/* Column 2: Quick Links (Centered Heading & Compact 3x2 Grid) */}
           <div className="flex flex-col md:px-2 lg:px-4">
             <div className="flex items-center justify-center h-8">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-200 text-center">
                 Quick Links
               </h3>
             </div>
-            <div className="mt-3 grid grid-cols-2 gap-1.5 sm:gap-2 text-xs w-full max-w-[280px] sm:max-w-[300px] mx-auto">
-              {/* Sub-column 1 */}
-              <ul className="flex flex-col gap-1.5">
-                {quickLinksCol1.map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="w-full min-h-[28px] sm:min-h-[30px] px-2 py-1 rounded-md border border-transparent bg-transparent text-gray-400 hover:text-emerald-400 hover:border-white/15 hover:bg-white/[0.03] transition-all duration-200 flex items-center justify-center text-center text-[11px] sm:text-xs font-medium leading-tight break-words focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 focus-visible:ring-offset-1 focus-visible:ring-offset-black hover:-translate-y-0.5 motion-reduce:transform-none"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Sub-column 2 */}
-              <ul className="flex flex-col gap-1.5">
-                {quickLinksCol2.map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="w-full min-h-[28px] sm:min-h-[30px] px-2 py-1 rounded-md border border-transparent bg-transparent text-gray-400 hover:text-emerald-400 hover:border-white/15 hover:bg-white/[0.03] transition-all duration-200 flex items-center justify-center text-center text-[11px] sm:text-xs font-medium leading-tight break-words focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 focus-visible:ring-offset-1 focus-visible:ring-offset-black hover:-translate-y-0.5 motion-reduce:transform-none"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul className="mt-2.5 grid grid-cols-3 gap-x-1 gap-y-1 text-xs w-full max-w-sm mx-auto">
+              {quickLinks.map((link) => (
+                <li key={link.name} className="flex">
+                  <a
+                    href={link.href}
+                    className="w-full min-h-[26px] sm:min-h-[28px] px-1 py-0.5 rounded border border-transparent bg-transparent text-gray-400 hover:text-emerald-400 hover:border-white/15 hover:bg-white/[0.03] transition-all duration-200 flex items-center justify-center text-center text-[11px] sm:text-xs font-medium leading-tight break-words focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 focus-visible:ring-offset-1 focus-visible:ring-offset-black hover:-translate-y-0.5 motion-reduce:transform-none"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Column 3: Social & Contact Links */}
