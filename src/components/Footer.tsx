@@ -73,29 +73,29 @@ export default function Footer() {
         ease: "power2.out",
         clearProps: "transform,opacity",
       })
-      .from(
-        ".footer-social-icon",
-        {
-          opacity: 0,
-          y: 10,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power2.out",
-          clearProps: "transform,opacity",
-        },
-        "-=0.3"
-      )
-      .from(
-        ".footer-copyright",
-        {
-          opacity: 0,
-          y: 10,
-          duration: 0.5,
-          ease: "power2.out",
-          clearProps: "transform,opacity",
-        },
-        "-=0.2"
-      );
+        .from(
+          ".footer-social-icon",
+          {
+            opacity: 0,
+            y: 10,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: "power2.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.3"
+        )
+        .from(
+          ".footer-copyright",
+          {
+            opacity: 0,
+            y: 10,
+            duration: 0.5,
+            ease: "power2.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.2"
+        );
     },
     { scope: footerRef }
   );
@@ -180,7 +180,7 @@ export default function Footer() {
         {/* Bottom Bar: Copyright & Attribution */}
         <div className="footer-copyright pt-8 border-t border-white/5 text-center text-xs text-gray-500">
           <p>
-            {`© ${new Date().getFullYear()} Md. Iqbal Hossain. All rights reserved. Built with Next.js & Tailwind CSS.`}
+            {`© ${new Date().getFullYear()} Md.Iqbal Hossain. All rights reserved. Built with Next.js & Tailwind CSS.`}
           </p>
         </div>
       </div>
