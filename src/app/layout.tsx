@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import CustomCursor from "@/components/CustomCursor";
+import SpiderWebBackground from "@/components/SpiderWebBackground";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,9 +51,12 @@ export default function RootLayout({
       </head>
       <body className="antialiased min-h-screen">
         <ThemeProvider>
+          <SpiderWebBackground />
           <CustomCursor />
           <LoadingScreen />
-          {children}
+          <div className="relative z-10">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>
