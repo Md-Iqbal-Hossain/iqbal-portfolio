@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import CustomCursor from "@/components/CustomCursor";
 import SpiderWebBackground from "@/components/SpiderWebBackground";
+import RecruiterAssistant from "@/components/RecruiterAssistant";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -57,6 +58,7 @@ export default function RootLayout({
           <div className="relative z-10">
             {children}
           </div>
+          <RecruiterAssistant />
         </ThemeProvider>
       </body>
     </html>
