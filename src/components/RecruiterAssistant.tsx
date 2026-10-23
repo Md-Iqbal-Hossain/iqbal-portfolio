@@ -401,9 +401,6 @@ export default function RecruiterAssistant() {
                   </h3>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 </div>
-                <p className="text-[11px] text-slate-400 [html.light_&]:text-slate-500 truncate">
-                  Recruiter Assistant • Gemini AI
-                </p>
               </div>
             </div>
 
